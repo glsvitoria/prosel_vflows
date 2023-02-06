@@ -24,6 +24,7 @@ export default function Header({title, company}: HeaderProps) {
 					Pagamento de Fornecedor
 				</h1>
 			</div>
+         
 			<ul className="grid grid-cols-2 border-2 border-no_black/50 rounded-2xl p-6 text-xl mt-8 mb-6">
 				<div className="flex">
 					<p className="mr-4">Razão Social:</p>

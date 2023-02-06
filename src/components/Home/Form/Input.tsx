@@ -1,11 +1,11 @@
 import { useField } from '@unform/core'
-import { useEffect, useRef } from 'react'
+import { InputHTMLAttributes, useEffect, useRef } from 'react'
 
-interface InputProps {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	name: string
 }
 
-function Input({ name, ...rest }: InputProps) {
+export default function Input({ name, ...rest }: InputProps) {
 	const inputRef = useRef(null)
 	const { fieldName, registerField, defaultValue, error } = useField(name)
 
@@ -28,5 +28,3 @@ function Input({ name, ...rest }: InputProps) {
 		</div>
 	)
 }
-
-export default Input

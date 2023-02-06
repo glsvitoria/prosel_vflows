@@ -1,6 +1,6 @@
 import FormUser from './Form/FormUser'
 
-function Home() {
+export default function Home() {
 	return (
 		<main className="flex items-center justify-center w-screen h-screen">
 			<section className="bg-white w-[600px] flex items-center flex-col rounded-[32px] border-4">
@@ -18,5 +18,3 @@ function Home() {
 		</main>
 	)
 }
-
-export default Home

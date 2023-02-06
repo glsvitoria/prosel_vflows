@@ -1,16 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import Contract from './components/Contract/Contract'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { createServer, Model } from 'miragejs'
+import ContractPage from './components/Contract/Contract'
 
 // MIRAGE JS
 createServer({
 	models: {
 		companies: Model,
 		contracts: Model,
+      invoices: Model
 	},
 
 	seeds(server) {
@@ -28,35 +29,40 @@ createServer({
 					name: 'GlsVitoria',
 					socialReason: 'Razão Social da GlsVitoria',
 					fantasyName: 'Nome Fantasia da GlsVitoria',
-					cnpj: '09.087.065/0432.01',
+					cnpj: '09.087.065/0432-01',
 				},
 			],
 			contracts: [
 				{
+               id: '1',
 					companyId: '1',
 					contractName: 'Título do primeiro contrato de exemplo',
 					contractCode: '11001100-01',
 					technicalRetention: '10',
 				},
 				{
+               id: '2',
 					companyId: '1',
 					contractName: 'Título do segundo contrato de exemplo',
 					contractCode: '22002200-02',
 					technicalRetention: '5',
 				},
 				{
+               id: '3',
 					companyId: '1',
 					contractName: 'Título do terceiro contrato de exemplo',
 					contractCode: '33003300-03',
 					technicalRetention: '15',
 				},
 				{
+               id: '4',
 					companyId: '1',
 					contractName: 'Título do quarto contrato de exemplo',
 					contractCode: '44004400-04',
 					technicalRetention: '8',
 				},
 			],
+         invoices: []
 		})
 	},
 
@@ -80,7 +86,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/company/:id',
-		element: <Contract />,
+		element: <ContractPage />,
 	},
 ])
 

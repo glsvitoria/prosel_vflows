@@ -5,17 +5,10 @@ import Input from './Input'
 import * as Yup from 'yup'
 import { useNavigate } from "react-router-dom";
 import { api } from '../../../services/api'
+import { Company, Contract } from '../../interfaces/interfaces'
 
 interface HandleSubmitProps {
    cnpj: string
-}
-
-interface Company {
-   id: 1, 
-   name: string,
-   'social-reason': string,
-   'fantasy-name': string,
-   cnpj: string,
 }
 
 export default function FormUser() {
@@ -26,19 +19,33 @@ export default function FormUser() {
       api.get('/companies').then((response) => {
          const companies: Company[] = response.data.companies
 
-         companies.forEach((company) => {
-            if (company.cnpj === cnpjWrited){
-               navigate(`/company/${company.id}`)
-            } else {
-               formRef.current.setErrors({
-                  cnpj: 'CNPJ não encontrado'
-               })
-            }
-         })
+         const companyFind = companies.filter((company) => company.cnpj === cnpjWrited)
 
+         if(companyFind) {
+            api.get('/contracts').then((response) => {
+               const contracts: Contract[] = response.data.contracts
+
+               const contractsFind = contracts.filter(
+                  (contract) => contract.companyId === companyFind[0].id
+               )
+
+               if(contractsFind){
+                  navigate(`/company/${companyFind[0].id}`)
+               } else {
+                  formRef.current.setErrors({
+                     cnpj: 'CNPJ sem contratos ativos'
+                  })
+               }
+            })
+         } else {
+            formRef.current.setErrors({
+               cnpj: 'CNPJ não encontrado'
+            })
+         }
       })
    }
-	async function handleSubmit(data: HandleSubmitProps, { reset }: any) {
+
+	async function handleSubmit(data: HandleSubmitProps) {
 		try {
          formRef.current.setErrors({})
 
