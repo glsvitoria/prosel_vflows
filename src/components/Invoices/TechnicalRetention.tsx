@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { Form } from '@unform/web'
 
 import InvoiceInput from './Form/InvoiceInput'
-import { IInvoice } from '../../@types/interfaces'
+import { IContract, IInvoice } from '../../@types/interfaces'
 import { UserInfoContext, UserInfoContextType } from '../../providers/userInfoContext'
 
 interface TecnhicalRetentionProps {
@@ -15,8 +15,8 @@ export default function TechnicalRetention({invoice}: TecnhicalRetentionProps) {
    const formRef = useRef(null)
 
 	useEffect(() => {
-		if (!invoice) return
-      const contract = userInfo?.contracts.find((contract) => contract.id === invoice.contractId)
+		if (!invoice || !userInfo?.contracts) return
+      const contract = userInfo?.contracts.find((contract: IContract) => contract.id === invoice.contractId)
 
       const amountWithPercentage = new Intl.NumberFormat('pt-BR', {
          style:'currency',

@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { MagnifyingGlass } from 'phosphor-react'
-import { Contract } from '../../@types/interfaces'
+import { IContract } from '../../@types/interfaces'
 
 import Pagination from '../Pagination/Pagination'
+import ModalDetails from './ModalDetails'
+import { api } from '../../services/api'
 
 interface TableProps {
-	contracts: Contract[] | null
+	contracts: IContract[] | null
 }
 
 export default function Table({ contracts }: TableProps) {
@@ -14,6 +16,8 @@ export default function Table({ contracts }: TableProps) {
 	const [viewContractError, setViewContractError] = useState('')
 	const navigate = useNavigate()
 	const location = useLocation()
+   const [modalIsOpen, setIsOpen] = useState(false)
+   const [contractID, setContractID] = useState('')
 
 	function backToHome() {
 		navigate('/')
@@ -32,6 +36,12 @@ export default function Table({ contracts }: TableProps) {
 
 		navigate(`${location.pathname}/contract/${checkboxChecked[0]}`)
 	}
+
+   function handleClick(id: string) {
+      setContractID(id)
+      setIsOpen(true)
+   }
+
 	return (
 		<>
 			<table className="w-full text-center">
@@ -82,7 +92,7 @@ export default function Table({ contracts }: TableProps) {
 									</div>
 								</td>
 								<td>
-									<div className="bg-button_blue w-8 h-8 rounded flex items-center justify-center mx-auto hover:brightness-90 hover:cursor-pointer duration-300">
+									<div className="bg-button_blue w-8 h-8 rounded flex items-center justify-center mx-auto hover:brightness-90 hover:cursor-pointer duration-300" onClick={() => handleClick(contract.id)}>
 										<MagnifyingGlass
 											size={24}
 											color="#FFF"
@@ -94,6 +104,8 @@ export default function Table({ contracts }: TableProps) {
 						))}
 				</tbody>
 			</table>
+
+         <ModalDetails modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} contractID={contractID} />
 
 			{viewContractError.length != 0 && (
 				<span className="text-error">{viewContractError}</span>

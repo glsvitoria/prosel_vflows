@@ -39,6 +39,7 @@ export default function Invoices() {
 
 	function searchInvoice(user: UserInfo) {
 		if (!user.invoices) return
+      console.log(user)
 		api.get(`/invoices/${location.pathname.split('/contract/')[1]}`).then(
 			(response) => {
 				const invoiceFind: IInvoice = response.data.invoices[0]
@@ -67,7 +68,9 @@ export default function Invoices() {
 			setUserInfo(userInfoParse)
 
 			searchInvoice(userInfoParse)
-		}
+		} else {
+         searchInvoice(userInfo)
+      }
 	}, [])
 
 	return (

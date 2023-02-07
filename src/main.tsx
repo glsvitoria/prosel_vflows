@@ -67,7 +67,7 @@ createServer({
 			invoices: [
 				{
 					id: '1',
-					contractId: '2',
+					contractId: '1',
                companyId: '1',
 					invoiceNumber: 523391,
 					issueDate: '2023-01-31T22:00:00.000Z',
@@ -166,11 +166,19 @@ createServer({
 			return this.schema.all('invoices').filter((invoices) => invoices.companyId == id)
 		})
 
+      this.get('/invoices/contract/:id', (_, req) => {
+         let id: string = req.params.id
+
+			return this.schema.all('invoices').filter((invoices) => invoices.contractId == id)
+		})
+
       this.get('/invoices/:id', (_, req) => {
          let id: string = req.params.id
 
 			return this.schema.all('invoices').filter((invoices) => invoices.id == id)
 		})
+
+
 
       this.get('/invoices', () => {
          return this.schema.all('invoices')
