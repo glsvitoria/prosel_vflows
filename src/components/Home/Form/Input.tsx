@@ -18,13 +18,17 @@ export default function Input({ name, ...rest }: InputProps) {
 	}, [fieldName, registerField])
 
 	return (
-		<div className='flex flex-col items-center w-full'>
+		<div className="flex flex-col items-center w-full">
 			<input
 				ref={inputRef}
 				className="border-black/20 border-[1px] rounded-lg w-4/5 h-10 pl-2"
 				{...rest}
 			/>
-         {error && <span className='text-error font-semibold mt-2 mb-[-8px]'>{error}</span>}
+			{error && (
+				<span className="text-error font-semibold mt-2 mb-[-8px]">
+					{error}
+				</span>
+			)}
 		</div>
 	)
 }

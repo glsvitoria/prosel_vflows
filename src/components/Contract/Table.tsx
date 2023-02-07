@@ -1,52 +1,56 @@
-import { MagnifyingGlass, CaretRight, CaretLeft } from 'phosphor-react'
-import { Contract } from './Contract'
-import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { MagnifyingGlass } from 'phosphor-react'
+import { Contract } from '../../@types/interfaces'
+
+import Pagination from '../Pagination/Pagination'
 
 interface TableProps {
-	contracts:  Contract[] | null
+	contracts: Contract[] | null
 }
 
 export default function Table({ contracts }: TableProps) {
-   const [checkboxChecked, setCheckboxCheked] = useState<number[]>([])
-   const [viewContractError, setViewContractError] = useState('')
+	const [checkboxChecked, setCheckboxCheked] = useState<string[]>([])
+	const [viewContractError, setViewContractError] = useState('')
 	const navigate = useNavigate()
+	const location = useLocation()
+
 	function backToHome() {
 		navigate('/')
 	}
 
-   function viewAContract() {
-      if(checkboxChecked.length === 0){
-         setViewContractError('Ao menos um Contrato deverá ser selecionado')
-         return false
-      }
+	function viewAContract() {
+		if (checkboxChecked.length === 0) {
+			setViewContractError('Ao menos um Contrato deverá ser selecionado')
+			return false
+		}
 
-      if(checkboxChecked.length >= 2){
-         setViewContractError('Somente um Contrato deverá ser selecionado')
-         return false
-      }
+		if (checkboxChecked.length >= 2) {
+			setViewContractError('Somente um Contrato deverá ser selecionado')
+			return false
+		}
 
-      console.log('ver contrato')
-   }
+		navigate(`${location.pathname}/contract/${checkboxChecked[0]}`)
+	}
 	return (
 		<>
-			<table className="w-full text-center mb-4">
+			<table className="w-full text-center">
 				<thead className="text-xl bg-table_header text-white h-12">
 					<tr>
-                  <th className="text-left pl-8">Nome do Contrato</th>
-                  <th>Código do Contrato</th>
-                  <th>Retenção Técnica</th>
-                  <th>Detalhes</th>
-               </tr>
+						<th className="text-left pl-8">Nome do Contrato</th>
+						<th>Código do Contrato</th>
+						<th>Retenção Técnica</th>
+						<th>Detalhes</th>
+					</tr>
 				</thead>
 				<tbody>
-					{contracts && (
+					{contracts &&
 						contracts.map((contract: Contract, index: number) => (
 							<tr
 								className={
 									index % 2 == 0 ? 'bg-line_1 h-10' : 'bg-line_2 h-10'
 								}
-                        key={contract.contractName}
+								key={contract.contractName}
 							>
 								<td className="text-left pl-4">
 									<input
@@ -54,13 +58,20 @@ export default function Table({ contracts }: TableProps) {
 										name={`contract_${index}`}
 										id={`contract_${index}`}
 										className="mr-4"
-                              onChange={(e) => {
-                                 if(e.target.checked) {
-                                    setCheckboxCheked([...checkboxChecked, index])
-                                 } else {
-                                    setCheckboxCheked(checkboxChecked.filter(x => x !== index))
-                                 }
-                              }}
+										onChange={(e) => {
+											if (e.target.checked) {
+												setCheckboxCheked([
+													...checkboxChecked,
+													contract.id,
+												])
+											} else {
+												setCheckboxCheked(
+													checkboxChecked.filter(
+														(x) => x !== contract.id
+													)
+												)
+											}
+										}}
 									/>
 									{contract.contractName}
 								</td>
@@ -80,26 +91,20 @@ export default function Table({ contracts }: TableProps) {
 									</div>
 								</td>
 							</tr>
-						))
-					)}
+						))}
 				</tbody>
 			</table>
 
-         {viewContractError.length != 0 && <span className='text-error'>{viewContractError}</span>}
+			{viewContractError.length != 0 && (
+				<span className="text-error">{viewContractError}</span>
+			)}
 
-			<div className="flex justify-end">
-				<div
-					className="bg-previous flex items-center justify-center rounded-md hover:cursor-pointer hover:brightness-90 duration-300 h-8 w-24 mr-4 text-white"
-					onClick={backToHome}
-				>
-					<CaretLeft size={28} color="#FFF" weight="bold" />
-					Home
-				</div>
-				<div className="bg-next flex items-center justify-center rounded-md hover:cursor-pointer hover:brightness-90 duration-300 h-8 w-48 text-white" onClick={viewAContract}>
-					Visualizar contrato
-					<CaretRight size={28} color="#FFF" weight="bold" />
-				</div>
-			</div>
+			<Pagination
+				backTitle="Home"
+				backFunction={backToHome}
+				nextTitle="Visualizar contrato"
+				nextFunction={viewAContract}
+			/>
 		</>
 	)
 }

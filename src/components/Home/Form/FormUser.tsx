@@ -1,77 +1,98 @@
+import { useContext, useRef } from 'react'
 import { Form } from '@unform/web'
-import { SignIn } from 'phosphor-react'
-import { useRef } from 'react'
-import Input from './Input'
-import * as Yup from 'yup'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
+import { Company, Contract } from '../../../@types/interfaces'
 import { api } from '../../../services/api'
-import { Company, Contract } from '../../interfaces/interfaces'
+import * as Yup from 'yup'
+import { SignIn } from 'phosphor-react'
+import {
+	UserInfoContext,
+	UserInfoContextType,
+} from '../../../providers/userInfoContext'
+
+import Input from './Input'
 
 interface HandleSubmitProps {
-   cnpj: string
+	cnpj: string
 }
 
 export default function FormUser() {
 	const formRef = useRef(null)
-   const navigate = useNavigate()
+	const navigate = useNavigate()
+	const { setUserInfo } = useContext(UserInfoContext) as UserInfoContextType
 
-   function login(cnpjWrited: string) {
-      api.get('/companies').then((response) => {
-         const companies: Company[] = response.data.companies
+	function login(cnpjWrited: string) {
+		api.get('/companies').then((response) => {
+			const companies: Company[] = response.data.companies
 
-         const companyFind = companies.filter((company) => company.cnpj === cnpjWrited)
+			const companyFind = companies.filter(
+				(company) => company.cnpj === cnpjWrited
+			)
 
-         if(companyFind) {
-            api.get('/contracts').then((response) => {
-               const contracts: Contract[] = response.data.contracts
+			if (companyFind) {
+				api.get('/contracts').then((response) => {
+					const contracts: Contract[] = response.data.contracts
 
-               const contractsFind = contracts.filter(
-                  (contract) => contract.companyId === companyFind[0].id
-               )
+					const contractsFind = contracts.filter(
+						(contract) => contract.companyId === companyFind[0].id
+					)
 
-               if(contractsFind){
-                  navigate(`/company/${companyFind[0].id}`)
-               } else {
-                  formRef.current.setErrors({
-                     cnpj: 'CNPJ sem contratos ativos'
-                  })
-               }
-            })
-         } else {
-            formRef.current.setErrors({
-               cnpj: 'CNPJ não encontrado'
-            })
-         }
-      })
-   }
+					if (contractsFind) {
+						const userInfoFind = {
+							company: companyFind[0],
+							contracts: contractsFind,
+						}
+						setUserInfo(userInfoFind)
+						localStorage.setItem('userInfo', JSON.stringify(userInfoFind))
+						navigate(`/company/${companyFind[0].id}`)
+					} else {
+						// @ts-ignore
+						formRef.current.setErrors({
+							cnpj: 'CNPJ sem contratos ativos',
+						})
+					}
+				})
+			} else {
+				// @ts-ignore
+				formRef.current.setErrors({
+					cnpj: 'CNPJ não encontrado',
+				})
+			}
+		})
+	}
 
 	async function handleSubmit(data: HandleSubmitProps) {
 		try {
-         formRef.current.setErrors({})
+			// @ts-ignore
+			formRef.current.setErrors({})
 
-         const cnpjWrited = data.cnpj
+			const cnpjWrited = data.cnpj
 
 			const schema = Yup.object().shape({
 				cnpj: Yup.string()
-               .trim()
-               .matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/, 'O CNPJ é inválido')
-               .required('O CNPJ é obrigatório'),
+					.trim()
+					.matches(
+						/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/,
+						'O CNPJ é inválido'
+					)
+					.required('O CNPJ é obrigatório'),
 			})
 
 			await schema.validate(data, {
-            abortEarly: false,
-         })
+				abortEarly: false,
+			})
 
-         login(cnpjWrited)
+			login(cnpjWrited)
 		} catch (err) {
-         const validationErrors = {}
+			const validationErrors = {}
 
-         if (err instanceof Yup.ValidationError) {
-            err.inner.forEach(error => {
-               validationErrors[error.path] = error.message
-            })
-            formRef.current.setErrors(validationErrors)
-         }
+			if (err instanceof Yup.ValidationError) {
+				err.inner.forEach((error) => {
+					// @ts-ignore
+					validationErrors[error.path] = error.message
+				})
+				formRef.current.setErrors(validationErrors)
+			}
 		}
 	}
 
