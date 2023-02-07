@@ -4,9 +4,11 @@ import { useField } from '@unform/core'
 interface InvoiceInputProps extends InputHTMLAttributes<HTMLInputElement> {
 	name: string
 	title: string
+   initialValue?: string
+   disabled?: boolean
 }
 
-export default function Input({ title, name, ...rest }: InvoiceInputProps) {
+export default function Input({ title, name, initialValue, disabled, ...rest }: InvoiceInputProps) {
 	const inputRef = useRef(null)
 	const { fieldName, registerField } = useField(name)
 
@@ -23,7 +25,8 @@ export default function Input({ title, name, ...rest }: InvoiceInputProps) {
 			{title}
 			<input
 				ref={inputRef}
-				className="border-black/20 border-[1px] rounded-lg w-4/5 h-10 pl-2 mt-2"
+				className={`border-black/20 border-[1px] rounded-lg w-4/5 h-10 pl-2 mt-2 ${disabled ? 'bg-disabled' : ''}`}
+            disabled={disabled}
 				{...rest}
 			/>
 		</label>

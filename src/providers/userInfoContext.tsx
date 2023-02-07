@@ -1,5 +1,5 @@
 import { createContext, Dispatch, useState } from "react";
-import { Company, Contract } from "../@types/interfaces";
+import { ICompany, IContract, IInvoice } from "../@types/interfaces";
 
 export type UserInfoContextType = {
    userInfo: UserInfo | null
@@ -7,8 +7,9 @@ export type UserInfoContextType = {
 }
 
 export type UserInfo = {
-   company: Company | null
-   contracts: Contract | Contract[] | null
+   company: ICompany | undefined
+   contracts: IContract | IContract[] | null
+   invoices: IInvoice[] | null
 }
 
 export const UserInfoContext = createContext<UserInfoContextType | {}>({})

@@ -25,26 +25,26 @@ export default function FormUser() {
 		api.get('/companies').then((response) => {
 			const companies: Company[] = response.data.companies
 
-			const companyFind = companies.filter(
+			const companyFind = companies.find(
 				(company) => company.cnpj === cnpjWrited
 			)
-
 			if (companyFind) {
-				api.get('/contracts').then((response) => {
+				api.get(`/contracts/${companyFind.id}`).then((response) => {
 					const contracts: Contract[] = response.data.contracts
 
 					const contractsFind = contracts.filter(
-						(contract) => contract.companyId === companyFind[0].id
+						(contract) => contract.companyId === companyFind.id
 					)
 
-					if (contractsFind) {
+					if (contractsFind.length > 0) {
 						const userInfoFind = {
-							company: companyFind[0],
+							company: companyFind,
 							contracts: contractsFind,
+                     invoices: null
 						}
 						setUserInfo(userInfoFind)
 						localStorage.setItem('userInfo', JSON.stringify(userInfoFind))
-						navigate(`/company/${companyFind[0].id}`)
+						navigate(`/company/${companyFind.id}`)
 					} else {
 						// @ts-ignore
 						formRef.current.setErrors({

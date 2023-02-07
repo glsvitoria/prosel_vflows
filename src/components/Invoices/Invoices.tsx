@@ -1,6 +1,14 @@
-import { useContext, useEffect, useRef } from 'react'
+import {
+	Dispatch,
+	SetStateAction,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from 'react'
 import { Form } from '@unform/web'
 import {
+	UserInfo,
 	UserInfoContext,
 	UserInfoContextType,
 } from '../../providers/userInfoContext'
@@ -13,6 +21,8 @@ import TechnicalRetention from './TechnicalRetention'
 import AttachFile from './AttachFile'
 import Pagination from '../Pagination/Pagination'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { IInvoice } from '../../@types/interfaces'
+import { api } from '../../services/api'
 
 export default function Invoices() {
 	const navigate = useNavigate()
@@ -21,16 +31,42 @@ export default function Invoices() {
 		UserInfoContext
 	) as UserInfoContextType
 	const formRef = useRef(null)
+	const [invoiceChoosed, setInvoiceChoosed] = useState<IInvoice>()
 
 	function backToContract() {
 		navigate(`${location.pathname.split('/contract')[0]}`)
 	}
 
+	function searchInvoice(user: UserInfo) {
+		if (!user.invoices) return
+		api.get(`/invoices/${location.pathname.split('/contract/')[1]}`).then(
+			(response) => {
+				const invoiceFind: IInvoice = response.data.invoices[0]
+
+				formRef.current.setData({
+					invoiceNumber: invoiceFind.invoiceNumber,
+					issueDate: new Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(
+						new Date(invoiceFind.issueDate)
+					),
+					dueDate: (new Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(
+						new Date(invoiceFind.dueDate)
+					)),
+               amount: invoiceFind.amount / 100
+				})
+
+				setInvoiceChoosed(invoiceFind)
+			}
+		)
+	}
+
 	useEffect(() => {
 		if (userInfo == null) {
 			const userInfoStorage = localStorage.getItem('userInfo')
+			// @ts-ignore
 			const userInfoParse = JSON.parse(userInfoStorage)
 			setUserInfo(userInfoParse)
+
+			searchInvoice(userInfoParse)
 		}
 	}, [])
 
@@ -73,7 +109,7 @@ export default function Invoices() {
 							id="dueDate"
 						/>
 						<InvoiceInput
-							title="Valor"
+							title="Valor (R$)"
 							type="number"
 							name="amount"
 							id="amount"
@@ -82,9 +118,9 @@ export default function Invoices() {
 						/>
 					</Form>
 
-					<TaxesRetention />
+					<TaxesRetention invoice={invoiceChoosed} />
 
-					<TechnicalRetention />
+					<TechnicalRetention invoice={invoiceChoosed} />
 
 					<AttachFile />
 				</section>

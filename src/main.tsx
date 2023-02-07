@@ -68,84 +68,72 @@ createServer({
 				{
 					id: '1',
 					contractId: '2',
-					invoiceNumber: '523391',
+               companyId: '1',
+					invoiceNumber: 523391,
 					issueDate: '2023-01-31T22:00:00.000Z',
 					dueDate: '2023-02-10T22:00:00.000Z',
-					value: '15990',
+					amount: 15990,
 					taxesRetention: {
-						ISSQN: '0',
-						IRRF: '0',
-						CSLL: '0',
-						COFINS: '0',
-						INSS: '0',
-						PIS: '0',
-					},
-					technicalRetention: {
-						value: '2385',
-						percentage: '15',
+						ISSQN: 0,
+						IRRF: 0,
+						CSLL: 0,
+						COFINS: 0,
+						INSS: 0,
+						PIS: 0,
 					},
 					attachedNotes: [],
 				},
 				{
 					id: '2',
 					contractId: '4',
-					invoiceNumber: '413781',
+               companyId: '1',
+					invoiceNumber: 413781,
 					issueDate: '2023-01-20T15:00:00.000Z',
 					dueDate: '2023-01-28T15:00:00.000Z',
-					value: '20910',
+					amount: 20910,
 					taxesRetention: {
-						ISSQN: '0',
-						IRRF: '0',
-						CSLL: '0',
-						COFINS: '0',
-						INSS: '0',
+						ISSQN: 0,
+						IRRF: 0,
+						CSLL: 0,
+						COFINS: 0,
+						INSS: 0,
 						PIS: '0',
-					},
-					technicalRetention: {
-						value: '1045',
-						percentage: '5',
 					},
 					attachedNotes: [],
 				},
 				{
 					id: '3',
 					contractId: '3',
-					invoiceNumber: '589396',
+               companyId: '1',
+					invoiceNumber: 589396,
 					issueDate: '2023-01-15T18:00:00.000Z',
 					dueDate: '2023-01-31T18:00:00.000Z',
-					value: '20910',
+					amount: 20910,
 					taxesRetention: {
-						ISSQN: '0',
-						IRRF: '0',
-						CSLL: '0',
-						COFINS: '0',
-						INSS: '0',
-						PIS: '0',
-					},
-					technicalRetention: {
-						value: '1045',
-						percentage: '5',
+						ISSQN: 0,
+						IRRF: 0,
+						CSLL: 0,
+						COFINS: 0,
+						INSS: 0,
+						PIS: 0,
 					},
 					attachedNotes: [],
 				},
 				{
 					id: '4',
 					contractId: '2',
-					invoiceNumber: '695321',
+               companyId: '1',
+					invoiceNumber: 695321,
 					issueDate: '2023-01-15T12:00:00.000Z',
 					dueDate: '2023-01-31T12:00:00.000Z',
-					value: '20910',
+					amount: 20910,
 					taxesRetention: {
-						ISSQN: '0',
-						IRRF: '0',
-						CSLL: '0',
-						COFINS: '0',
-						INSS: '0',
-						PIS: '0',
-					},
-					technicalRetention: {
-						value: '1045',
-						percentage: '5',
+						ISSQN: 0,
+						IRRF: 0,
+						CSLL: 0,
+						COFINS: 0,
+						INSS: 0,
+						PIS: 0,
 					},
 					attachedNotes: [],
 				},
@@ -160,9 +148,33 @@ createServer({
 			return this.schema.all('companies')
 		})
 
-		this.get('/contracts', () => {
+      this.get('/contracts', (scheme, req) => {
+         let id = req.params.id
+
 			return this.schema.all('contracts')
 		})
+
+		this.get('/contracts/:id', (_, req) => {
+         let id: string = req.params.id
+
+			return this.schema.all('contracts').filter((contract) => contract.companyId == id)
+		})
+
+      this.get('/invoices/company/:id', (_, req) => {
+         let id: string = req.params.id
+
+			return this.schema.all('invoices').filter((invoices) => invoices.companyId == id)
+		})
+
+      this.get('/invoices/:id', (_, req) => {
+         let id: string = req.params.id
+
+			return this.schema.all('invoices').filter((invoices) => invoices.id == id)
+		})
+
+      this.get('/invoices', () => {
+         return this.schema.all('invoices')
+      })
 	},
 })
 

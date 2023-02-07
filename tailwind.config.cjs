@@ -13,6 +13,7 @@ module.exports = {
          button_blue: '#2C70B9',
          button_green: '#67685A',
          table_header: '#AAAAAA',
+         disabled: '#BBBBBB',
          next: '#008B47',
          previous: '#FFBE00',
          line_1: '#EEE',

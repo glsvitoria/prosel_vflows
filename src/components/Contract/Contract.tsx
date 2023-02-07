@@ -2,24 +2,45 @@ import { useContext, useEffect } from 'react'
 import {
 	UserInfoContextType,
 	UserInfoContext,
+   UserInfo,
 } from '../../providers/userInfoContext'
 
 import Header from '../Header/Header'
 import Table from './Table'
 import Footer from '../Footer/Footer'
+import { api } from '../../services/api'
 
 export default function ContractPage() {
 	const { userInfo, setUserInfo } = useContext(
 		UserInfoContext
 	) as UserInfoContextType
 
+   function searchInvoices(user: UserInfo) {
+      if (!user || !user.company) return
+
+      api.get(`/invoices/company/${user.company.id}`).then(response => {
+         const invoices = response.data.invoices
+
+         const userInfoFind = {
+            company: user.company,
+            contracts: user.contracts,
+            invoices
+         }
+         
+         localStorage.setItem('userInfo', JSON.stringify(userInfoFind))
+         setUserInfo(userInfoFind)
+      })
+   }
+
 	useEffect(() => {
 		if (userInfo == null) {
 			const userInfoStorage = localStorage.getItem('userInfo')
-			const userInfoParse = JSON.parse(userInfoStorage)
-			setUserInfo(userInfoParse)
-		}
+			const userInfoParse: UserInfo = JSON.parse(userInfoStorage)
+
+         searchInvoices(userInfoParse)
+		}      
 	}, [])
+
 
 	return (
 		<main className="w-full h-full">
