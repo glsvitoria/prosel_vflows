@@ -10,7 +10,7 @@ interface InvoiceInputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export default function Input({ title, name, initialValue, disabled, ...rest }: InvoiceInputProps) {
 	const inputRef = useRef(null)
-	const { fieldName, registerField } = useField(name)
+	const { fieldName, registerField, error } = useField(name)
 
 	useEffect(() => {
 		registerField({
@@ -29,6 +29,12 @@ export default function Input({ title, name, initialValue, disabled, ...rest }: 
             disabled={disabled}
 				{...rest}
 			/>
+
+         {error && (
+				<span className="text-error text-xs font-semibold mt-2 mb-[-8px]">
+					{error}
+				</span>
+			)}
 		</label>
 	)
 }

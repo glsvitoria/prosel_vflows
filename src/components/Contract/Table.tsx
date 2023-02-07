@@ -5,7 +5,6 @@ import { IContract } from '../../@types/interfaces'
 
 import Pagination from '../Pagination/Pagination'
 import ModalDetails from './ModalDetails'
-import { api } from '../../services/api'
 
 interface TableProps {
 	contracts: IContract[] | null
@@ -55,7 +54,7 @@ export default function Table({ contracts }: TableProps) {
 				</thead>
 				<tbody>
 					{contracts &&
-						contracts.map((contract: Contract, index: number) => (
+						contracts.map((contract: IContract, index: number) => (
 							<tr
 								className={
 									index % 2 == 0 ? 'bg-line_1 h-10' : 'bg-line_2 h-10'
