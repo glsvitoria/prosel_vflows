@@ -16,7 +16,7 @@
   - [Requisitos](#requisitos)
   - [Como rodar o projeto](#como-rodar-o-projeto)
   - [Como utilizar](#como-utilizar-o-projeto)
-  - [Screenshot](#screenshot)
+  - [Screenshot e Páginas](#screenshot-paginas)
 - [Processo](#processo)
   - [Pre Desenvolvimento](#pre-desenvolvimento)
   - [Tecnologia utilizadas](#tecnologias-utilizadas)
@@ -52,10 +52,13 @@ A Aplicação deve ser construídas utilizando as seguintes tecnologias:
       - Caso tudo esteja correto, será enviado todas as informações e você será redirecionado para a página inicial
       - Caso não, irá aparecer uma mensagem de erro no campo que estiver com algum problema
 
-### Screenshot
+### Screenshot e Páginas
 ---
+Home Page - Página de acesso
 ![](./public/Home.jpg)
+Contracts Page - Página de contratos vinculados
 ![](./public/Contracts.jpg)
+Invoice Page - Página de dados da nota fiscal
 ![](./public/Invoices.jpg)
 
 ## Processo
