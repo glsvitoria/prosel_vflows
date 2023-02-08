@@ -44,13 +44,13 @@ A Aplicação deve ser construídas utilizando as seguintes tecnologias:
 ### Como utilizar
 ---
    1. Digite o CNPJ de sua empresa
-      - Caso ele esteja no banco de dados e possuir um contrato ativo será redirecionado para a página de contratos
-      - Caso não esteja no banco de dados ou não tenha um contrato ativo, será refletida a mensagem ao erro correspondente
+      - Caso ele esteja no banco de dados e possua um contrato ativo, será redirecionado para a página de contratos
+      - Caso não esteja no banco de dados ou não tenha um contrato ativo, aparecerá a mensagem ao erro correspondente
    2. Clique na lupa referente ao contrato que deseja visualizar os detalhes e um modal será aberto mostrando as informações
-   3. Desejando modificar alguma informação do contrato, selecione seu checkbox e cliquei em `visualizar contrato`
-   4. Nessa página é possível modificar as informações do contrato que você desejar e anexar uma nota fiscal. Ao final clique em `salvar alterações`
+   3. Desejando modificar alguma informação do contrato, selecione seu checkbox e clique em `visualizar contrato`
+   4. Nessa página, é possível modificar as informações do contrato que você deseja e anexar uma nota fiscal. Ao final, clique em `salvar alterações`
       - Caso tudo esteja correto, será enviado todas as informações e você será redirecionado para a página inicial
-      - Caso não, irá aparecer uma mensagem de erro no campo que estiver com algum problema
+      - Caso não, irá aparecer uma mensagem de “erro” no campo que estiver com algum problema
 
 ### Screenshot e Páginas
 ---
@@ -92,7 +92,7 @@ Invoice Page - Página de dados da nota fiscal
 
 ### O que eu aprendi e implementei
 ---
-   - Utilização do MirageJS e suas requisições criadas para pegar as informações
+   - Utilização do MirageJS e suas requisições criadas para pegar as informações do database
    - Criação de validação de formulário com Yup atrelado ao Unform
    - Aplicação da biblioteca React Modal com opções de responsividade
    - Planejamento de um projeto iniciando desde o Figma e Miro para o design e ideia para o database para após isso ir para o código
