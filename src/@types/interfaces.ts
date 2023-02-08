@@ -46,6 +46,6 @@ export type UserInfoContextType = {
 
 export type UserInfo = {
    company: ICompany | null
-   contracts: IContract | IContract[] | null
+   contracts: IContract[] | null
    invoices: IInvoice[] | null
 }

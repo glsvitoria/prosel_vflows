@@ -51,8 +51,9 @@ export default function Invoices() {
 				const invoiceFind: IInvoice = response.data.invoices[0]
             if(user.contracts == null) return
 				const contract = user.contracts.find(
-					(contract: IContract) => contract.id === invoiceFind.contractId
+					(contract) => contract.id === invoiceFind.contractId
 				)
+            if(contract == null) return
             const amountCalculated = (contract.technicalRetention / 100) * invoiceFind.amount
 
             // @ts-ignore

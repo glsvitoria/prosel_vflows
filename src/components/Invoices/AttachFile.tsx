@@ -25,6 +25,7 @@ export default function AttachFile({filesName, setFilesName}: AttachFileProps) {
 					type="file"
 					className="w-0"
 					onChange={(e) =>
+                  // @ts-ignore
 						setFilesName([...filesName, inputRef.current.files[0].name])
 					}
 				/>

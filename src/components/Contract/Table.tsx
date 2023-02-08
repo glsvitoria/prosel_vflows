@@ -7,7 +7,7 @@ import Pagination from '../Pagination/Pagination'
 import ModalDetails from './Modal/ModalDetails'
 
 interface TableProps {
-	contracts: IContract | IContract[] | null
+	contracts: IContract[] | null | undefined
 }
 
 export default function Table({ contracts }: TableProps) {
