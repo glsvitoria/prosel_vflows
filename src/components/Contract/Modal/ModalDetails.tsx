@@ -11,14 +11,15 @@ interface ModalDetailsProps {
 	contractID: string
 }
 
-interface TechnicalRetentionState{
-   percentage: number
-   amount: number
+interface TechnicalRetentionState {
+	percentage: number
+	amount: number
 }
 
 const customStyles = {
 	content: {
 		width: '60%',
+      maxWidth: '800px',
 		height: '60%',
 		margin: 'auto',
 		borderRadius: '1.5rem',
@@ -32,32 +33,34 @@ export default function ModalDetails({
 	contractID,
 }: ModalDetailsProps) {
 	const [invoice, setInvoice] = useState<IInvoice | null>(null)
-   const [technicalRetention, setTechnicalRetention] = useState<TechnicalRetentionState>({
-      percentage: 0,
-      amount: 0
-   })
+	const [technicalRetention, setTechnicalRetention] =
+		useState<TechnicalRetentionState>({
+			percentage: 0,
+			amount: 0,
+		})
+	const [isLoading, setIsLoading] = useState(false)
 
 	function closeModal() {
 		setIsOpen(false)
 	}
 
 	useEffect(() => {
-      if(!contractID) return
+		if (!contractID) return
 
 		api.get(`/invoices/contract/${contractID}`).then((response) => {
 			const invoiceFind = response.data.invoices[0]
 			setInvoice(invoiceFind)
-         
-         api.get(`/contracts/${contractID}`).then((response) => {
-            const contractFind:IContract = response.data.contracts[0]
-            setTechnicalRetention({
-               percentage: contractFind.technicalRetention,
-               amount: contractFind.technicalRetention / 100 * invoiceFind.amount
-            })
-         })
-		})
 
-      
+			api.get(`/contracts/${contractID}`).then((response) => {
+				const contractFind: IContract = response.data.contracts[0]
+				setTechnicalRetention({
+					percentage: contractFind.technicalRetention,
+					amount:
+						(contractFind.technicalRetention / 100) * invoiceFind.amount,
+				})
+            setIsLoading(false)
+			})
+		})
 	}, [contractID])
 
 	return (
@@ -67,8 +70,9 @@ export default function ModalDetails({
 			style={customStyles}
 			contentLabel="Modal Details"
 			ariaHideApp={false}
+         onAfterOpen={() => setIsLoading(true)}
 		>
-			{invoice && (
+			{invoice && !isLoading ? (
 				<section>
 					<div className="flex items-center justify-center">
 						<Info
@@ -110,9 +114,11 @@ export default function ModalDetails({
 					<div className="border-2 mt-6 mb-4 border-no_black/25"></div>
 
 					<ul className="grid grid-cols-3 gap-x-16 gap-y-8 text-center text-white relative">
-                  <div className='absolute -top-8 w-full'>
-                     <h2 className=' text-no_black w-2/5 text-center border-2 mx-auto border-no_black/25 -top-8 m-auto text-lg bg-white'>Retenção de Impostos</h2>
-                  </div>
+						<div className="absolute -top-8 w-full">
+							<h2 className=" text-no_black w-2/5 text-center border-2 mx-auto border-no_black/25 -top-8 m-auto text-lg bg-white">
+								Retenção de Impostos
+							</h2>
+						</div>
 						<ModalTaxesItem
 							title="ISSQN"
 							taxesValue={invoice.taxesRetention.ISSQN}
@@ -148,21 +154,32 @@ export default function ModalDetails({
 					<div className="border-2 mt-6 mb-4 border-no_black/25"></div>
 
 					<div className="grid grid-cols-2 text-xl relative">
-                  <div className='absolute -top-8 w-full'>
-                     <h2 className=' text-no_black w-2/5 text-center border-2 mx-auto border-no_black/25 -top-8 m-auto text-lg bg-white'>Retenção Técnica</h2>
-                  </div>
+						<div className="absolute -top-8 w-full">
+							<h2 className=" text-no_black w-2/5 text-center border-2 mx-auto border-no_black/25 -top-8 m-auto text-lg bg-white">
+								Retenção Técnica
+							</h2>
+						</div>
 						<p className="flex items-center gap-3 mt-4">
 							<Money size={32} color="#030303" /> Valor:{' '}
-							<span className="text-sm font-bold">{new Intl.NumberFormat('pt-BR', {
-                        style: 'currency', currency: 'BRL'
-                     }).format(technicalRetention.amount / 100)}</span>
+							<span className="text-sm font-bold">
+								{new Intl.NumberFormat('pt-BR', {
+									style: 'currency',
+									currency: 'BRL',
+								}).format(technicalRetention.amount / 100)}
+							</span>
 						</p>
 						<p className="flex items-center gap-3  mt-4">
 							<Percent size={32} color="#030303" /> Percentual:{' '}
-							<span className="text-sm font-bold">{technicalRetention.percentage}%</span>
+							<span className="text-sm font-bold">
+								{technicalRetention.percentage}%
+							</span>
 						</p>
 					</div>
 				</section>
+			) : (
+				<div className='w-full h-full flex items-center justify-center'>
+					<div className="border-[20px] border-line_2 border-t-table_header h-64 w-64 animate-spin rounded-[50%]"></div>
+				</div>
 			)}
 
 			<button

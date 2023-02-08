@@ -3,7 +3,7 @@ import FormUser from './Form/FormUser'
 export default function Home() {
 	return (
 		<main className="flex items-center justify-center w-screen h-screen">
-			<section className="bg-white w-[600px] flex items-center flex-col rounded-[32px] border-4">
+			<section className="bg-white w-[600px] flex items-center flex-col rounded-[32px] border-4 max-w-xl">
 				<img
 					src="/logo.png"
 					alt="Logo da VFlows"

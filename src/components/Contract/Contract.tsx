@@ -43,8 +43,8 @@ export default function ContractPage() {
 
 
 	return (
-		<main className="w-full h-full">
-			<section className="bg-white mx-10 mt-10 rounded border-4 px-6">
+		<main className="w-full h-full flex justify-center">
+			<section className="bg-white mx-10 mt-10 mb-10 rounded border-4 px-6 max-w-[1440px] w-full">
 				<Header
 					title="Contratos Vinculados"
 					company={userInfo?.company}
