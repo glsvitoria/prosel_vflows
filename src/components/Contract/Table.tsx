@@ -11,12 +11,13 @@ interface TableProps {
 }
 
 export default function Table({ contracts }: TableProps) {
-	const [checkboxChecked, setCheckboxCheked] = useState<string[]>([])
-	const [viewContractError, setViewContractError] = useState('')
 	const navigate = useNavigate()
 	const location = useLocation()
-	const [modalIsOpen, setIsOpen] = useState(false)
+
+	const [checkboxChecked, setCheckboxCheked] = useState<string[]>([])
+	const [viewContractError, setViewContractError] = useState('')
 	const [contractID, setContractID] = useState('')
+	const [modalIsOpen, setIsOpen] = useState(false)
 
 	function backToHome() {
 		navigate('/')
@@ -50,8 +51,8 @@ export default function Table({ contracts }: TableProps) {
 				>
 					<thead className="lg:text-xl text-lg bg-table_header text-white h-12">
 						<tr>
-                     <th></th>
-							<th className='text-left' >Nome do Contrato</th>
+							<th></th>
+							<th className="text-left">Nome do Contrato</th>
 							<th>Código do Contrato</th>
 							<th>Retenção Técnica</th>
 							<th>Detalhes</th>
@@ -88,7 +89,9 @@ export default function Table({ contracts }: TableProps) {
 											}}
 										/>
 									</td>
-                           <td className='text-left'>{contract.contractName}</td>
+									<td className="text-left">
+										{contract.contractName}
+									</td>
 									<td>{contract.contractCode}</td>
 									<td>
 										<div className="bg-button_blue w-3/5 text-white mx-auto">

@@ -24,7 +24,7 @@ const router = createBrowserRouter([
 	},
 ])
 
-// MIRAGE JS
+// MIRAGE JS - DATABASE
 createServer({
 	models: {
 		companies: Model,
@@ -157,6 +157,7 @@ createServer({
 		})
 	},
 
+   // GET REQUEST
 	routes() {
 		this.namespace = 'api'
 

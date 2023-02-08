@@ -1,7 +1,5 @@
 import { useContext, useEffect } from 'react'
-import {
-	UserInfoContext,
-} from '../../providers/userInfoContext'
+import { UserInfoContext } from '../../providers/userInfoContext'
 
 import Header from '../Header/Header'
 import Table from './Table'
@@ -14,33 +12,32 @@ export default function ContractPage() {
 		UserInfoContext
 	) as UserInfoContextType
 
-   function searchInvoices(user: UserInfo) {
-      if (!user || !user.company) return
+	function searchInvoices(user: UserInfo) {
+		if (!user || !user.company) return
 
-      api.get(`/invoices/company/${user.company.id}`).then(response => {
-         const invoices = response.data.invoices
+		api.get(`/invoices/company/${user.company.id}`).then((response) => {
+			const invoices = response.data.invoices
 
-         const userInfoFind = {
-            company: user.company,
-            contracts: user.contracts,
-            invoices
-         }
-         
-         localStorage.setItem('userInfo', JSON.stringify(userInfoFind))
-         setUserInfo(userInfoFind)
-      })
-   }
+			const userInfoFind = {
+				company: user.company,
+				contracts: user.contracts,
+				invoices,
+			}
+
+			localStorage.setItem('userInfo', JSON.stringify(userInfoFind))
+			setUserInfo(userInfoFind)
+		})
+	}
 
 	useEffect(() => {
 		if (userInfo == null) {
 			const userInfoStorage = localStorage.getItem('userInfo')
-         // @ts-ignore
+			// @ts-ignore
 			const userInfoParse: UserInfo = JSON.parse(userInfoStorage)
 
-         searchInvoices(userInfoParse)
-		}      
+			searchInvoices(userInfoParse)
+		}
 	}, [])
-
 
 	return (
 		<main className="w-full h-full flex justify-center">

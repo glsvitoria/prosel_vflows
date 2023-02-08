@@ -4,12 +4,11 @@ import { UserInfoContext } from '../../providers/userInfoContext'
 
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
-import InvoiceInput from './Form/InvoiceInput'
+import InvoiceInput from './InvoiceInput/InvoiceInput'
 import AttachFile from './AttachFile'
 import Pagination from '../Pagination/Pagination'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
-	IContract,
 	IInvoice,
 	UserInfo,
 	UserInfoContextType,
@@ -123,10 +122,14 @@ export default function Invoices() {
 				invoiceNumber: Yup.string().required(
 					'Número da Nota é obrigatório'
 				),
-				issueDate: Yup.date().typeError('Uma data válida deve ser preenchida').required('Data de Emissão é obrigatório'),
-				dueDate: Yup.date().typeError('Uma data válida deve ser preenchida').required('Data de Vencimento é obrigatório'),
+				issueDate: Yup.date()
+					.typeError('Uma data válida deve ser preenchida')
+					.required('Data de Emissão é obrigatório'),
+				dueDate: Yup.date()
+					.typeError('Uma data válida deve ser preenchida')
+					.required('Data de Vencimento é obrigatório'),
 				amount: Yup.number()
-               .typeError('Valor é obrigatório e deve ser um número')
+					.typeError('Valor é obrigatório e deve ser um número')
 					.required('Valor é obrigatório')
 					.min(0, 'Valor deve ser maior que 0'),
 				ISSQN: Yup.number()

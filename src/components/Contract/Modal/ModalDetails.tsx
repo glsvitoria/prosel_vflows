@@ -1,9 +1,12 @@
-import { Info, Money, Percent, X } from 'phosphor-react'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import Modal from 'react-modal'
+import { Info, X } from 'phosphor-react'
 import { IContract, IInvoice } from '../../../@types/interfaces'
 import { api } from '../../../services/api'
-import ModalTaxesItem from './ModalTaxesItem'
+
+import Modal from 'react-modal'
+import ModalTaxes from './TaxesRetention/ModalTaxes'
+import ModalTechnicalRetention from './TechnicalRetention/ModalTechnicalRetention'
+import ModalContractInfo from './ContractInfo/ModalContractInfo'
 
 interface ModalDetailsProps {
 	modalIsOpen: boolean
@@ -23,6 +26,7 @@ function isSmallScreen(size: number): Boolean {
 	return false
 }
 
+// MODAL STYLES
 const customStyles = {
 	content: {
 		width: isSmallScreen(560) ? '90%' : '60%',
@@ -94,104 +98,18 @@ export default function ModalDetails({
 							Detalhes do Contrato
 						</h1>
 					</div>
-					<div className="grid xl:grid-cols-2 grid-cols-1 text-center md:mt-10 mt-6 gap-y-4">
-						<p className="lg:text-lg md:text-base text-sm">
-							Número da Nota:{' '}
-							<span className="md:text-sm text-xs font-bold">
-								{invoice.invoiceNumber}
-							</span>
-						</p>
-						<p className="lg:text-lg md:text-base text-sm">
-							Valor:{' '}
-							<span className="md:text-sm text-xs font-bold">
-								{new Intl.NumberFormat('pt-BR', {
-									style: 'currency',
-									currency: 'BRL',
-								}).format(invoice.amount / 100)}
-							</span>
-						</p>
-						<p className="lg:text-lg md:text-base text-sm">
-							Data de Emissão:{' '}
-							<span className="md:text-sm text-xs font-bold">
-								{new Intl.DateTimeFormat('pt-BR').format(
-									new Date(invoice.issueDate)
-								)}
-							</span>
-						</p>
-						<p className="lg:text-lg md:text-base text-sm">
-							Data de Vencimento:{' '}
-							<span className="md:text-sm text-xs font-bold">
-								{new Intl.DateTimeFormat('pt-BR').format(
-									new Date(invoice.dueDate)
-								)}
-							</span>
-						</p>
-					</div>
+
+               <ModalContractInfo invoice={invoice} />
 
 					<div className="border-2 sm:mt-12 mt-8 mb-4 border-no_black/25"></div>
 
-					<ul className="grid md:grid-cols-3 xs:grid-cols-2 xl:gap-x-16 gap-x-8 xl:gap-y-8 text-center text-white relative">
-						<div className="absolute -top-8 w-full">
-							<h2 className=" text-no_black xl:w-2/5 lg:w-3/5 xs:w-4/5 w-11/12 text-center border-2 mx-auto border-no_black/25 -top-8 m-auto md:text-lg text-base bg-white">
-								Retenção de Impostos
-							</h2>
-						</div>
-						<ModalTaxesItem
-							title="ISSQN"
-							taxesValue={invoice.taxesRetention.ISSQN}
-							color="green"
-						/>
-						<ModalTaxesItem
-							title="IRRF"
-							taxesValue={invoice.taxesRetention.IRRF}
-							color="blue"
-						/>
-						<ModalTaxesItem
-							title="CSLL"
-							taxesValue={invoice.taxesRetention.CSLL}
-							color="green"
-						/>
-						<ModalTaxesItem
-							title="COFINS"
-							taxesValue={invoice.taxesRetention.COFINS}
-							color="blue"
-						/>
-						<ModalTaxesItem
-							title="INSS"
-							taxesValue={invoice.taxesRetention.INSS}
-							color="green"
-						/>
-						<ModalTaxesItem
-							title="PIS"
-							taxesValue={invoice.taxesRetention.PIS}
-							color="blue"
-						/>
-					</ul>
+					<ModalTaxes invoiceTaxes={invoice.taxesRetention} />
 
 					<div className="border-2 sm:mt-12 mt-10 mb-4 border-no_black/25"></div>
 
-					<div className="grid md:grid-cols-2 grid-cols-1 text-xl relative justify-items-center">
-						<div className="absolute -top-8 w-full">
-							<h2 className=" text-no_black xl:w-2/5 lg:w-3/5 xs:w-4/5 w-11/12 text-center border-2 mx-auto border-no_black/25 -top-8 m-auto md:text-lg text-base bg-white">
-								Retenção Técnica
-							</h2>
-						</div>
-						<p className="flex items-center gap-3 md:mt-8 mt-4 xl:text-xl lg:text-lg text-sm">
-							<Money size={24} color="#030303" /> Valor:{' '}
-							<span className="lg:text-sm text-xs font-bold">
-								{new Intl.NumberFormat('pt-BR', {
-									style: 'currency',
-									currency: 'BRL',
-								}).format(technicalRetention.amount / 100)}
-							</span>
-						</p>
-						<p className="flex items-center gap-3 md:mt-8 mt-4 xl:text-xl lg:text-lg text-sm">
-							<Percent size={24} color="#030303" /> Percentual:{' '}
-							<span className="lg:text-sm text-xs font-bold">
-								{technicalRetention.percentage}%
-							</span>
-						</p>
-					</div>
+					<ModalTechnicalRetention
+						technicalRetention={technicalRetention}
+					/>
 				</section>
 			) : (
 				<div className="w-full h-full flex items-center justify-center">
