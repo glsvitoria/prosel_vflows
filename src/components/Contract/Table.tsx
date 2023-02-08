@@ -43,14 +43,15 @@ export default function Table({ contracts }: TableProps) {
 
 	return (
 		<>
-			<div className="xl:w-full w-[1024px] max-w-full overflow-x-scroll">
+			<div className="xl:w-full w-[1024px] max-w-full xl:overflow-hidden overflow-x-scroll">
 				<table
 					className=" w-full text-center whitespace-nowrap"
 					cellPadding={12}
 				>
 					<thead className="lg:text-xl text-lg bg-table_header text-white h-12">
 						<tr>
-							<th className="text-left pl-8">Nome do Contrato</th>
+                     <th></th>
+							<th className='text-left' >Nome do Contrato</th>
 							<th>Código do Contrato</th>
 							<th>Retenção Técnica</th>
 							<th>Detalhes</th>
@@ -70,7 +71,7 @@ export default function Table({ contracts }: TableProps) {
 											type="checkbox"
 											name={`contract_${index}`}
 											id={`contract_${index}`}
-											className="mr-4 w-4 h-4 align-middle"
+											className="w-4 h-4 align-middle"
 											onChange={(e) => {
 												if (e.target.checked) {
 													setCheckboxCheked([
@@ -86,8 +87,8 @@ export default function Table({ contracts }: TableProps) {
 												}
 											}}
 										/>
-										{contract.contractName}
 									</td>
+                           <td className='text-left'>{contract.contractName}</td>
 									<td>{contract.contractCode}</td>
 									<td>
 										<div className="bg-button_blue w-3/5 text-white mx-auto">

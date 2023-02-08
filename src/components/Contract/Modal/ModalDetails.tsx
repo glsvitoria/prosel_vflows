@@ -17,10 +17,10 @@ interface TechnicalRetentionState {
 }
 
 function isSmallScreen(size: number): Boolean {
-   if (typeof window !== 'undefined') {
-      return window.innerWidth < size;
-   }
-   return false;
+	if (typeof window !== 'undefined') {
+		return window.innerWidth < size
+	}
+	return false
 }
 
 const customStyles = {
@@ -32,7 +32,7 @@ const customStyles = {
 		margin: 'auto',
 		borderRadius: '1.5rem',
 		padding: isSmallScreen(480) ? '2rem 1rem' : '3rem 2rem',
-      inset: isSmallScreen(480) ? '0px' : '40px'
+		inset: isSmallScreen(480) ? '0px' : '40px',
 	},
 }
 
@@ -54,10 +54,12 @@ export default function ModalDetails({
 	}
 
 	useEffect(() => {
+		setIsLoading(true)
 		if (!contractID) return
 
 		api.get(`/invoices/contract/${contractID}`).then((response) => {
 			const invoiceFind = response.data.invoices[0]
+			console.log(invoiceFind)
 			setInvoice(invoiceFind)
 
 			api.get(`/contracts/${contractID}`).then((response) => {
@@ -79,7 +81,6 @@ export default function ModalDetails({
 			style={customStyles}
 			contentLabel="Modal Details"
 			ariaHideApp={false}
-			onAfterOpen={() => setIsLoading(true)}
 		>
 			{invoice && !isLoading ? (
 				<section>
@@ -89,7 +90,9 @@ export default function ModalDetails({
 							color="rgba(193, 159, 159, 0.90)"
 							className="mr-4 lg:w-8 lg:h-8 w-6 h-6"
 						/>
-						<h1 className="lg:text-3xl md:text-2xl text-lg">Detalhes do Contrato</h1>
+						<h1 className="lg:text-3xl md:text-2xl text-lg">
+							Detalhes do Contrato
+						</h1>
 					</div>
 					<div className="grid xl:grid-cols-2 grid-cols-1 text-center md:mt-10 mt-6 gap-y-4">
 						<p className="lg:text-lg md:text-base text-sm">
@@ -100,7 +103,12 @@ export default function ModalDetails({
 						</p>
 						<p className="lg:text-lg md:text-base text-sm">
 							Valor:{' '}
-							<span className="md:text-sm text-xs font-bold">{invoice.amount}</span>
+							<span className="md:text-sm text-xs font-bold">
+								{new Intl.NumberFormat('pt-BR', {
+									style: 'currency',
+									currency: 'BRL',
+								}).format(invoice.amount / 100)}
+							</span>
 						</p>
 						<p className="lg:text-lg md:text-base text-sm">
 							Data de Emissão:{' '}
@@ -120,7 +128,7 @@ export default function ModalDetails({
 						</p>
 					</div>
 
-					<div className="border-2 sm:mt-6 mt-8 mb-4 border-no_black/25"></div>
+					<div className="border-2 sm:mt-12 mt-8 mb-4 border-no_black/25"></div>
 
 					<ul className="grid md:grid-cols-3 xs:grid-cols-2 xl:gap-x-16 gap-x-8 xl:gap-y-8 text-center text-white relative">
 						<div className="absolute -top-8 w-full">
@@ -160,7 +168,7 @@ export default function ModalDetails({
 						/>
 					</ul>
 
-					<div className="border-2 sm:mt-6 mt-10 mb-4 border-no_black/25"></div>
+					<div className="border-2 sm:mt-12 mt-10 mb-4 border-no_black/25"></div>
 
 					<div className="grid md:grid-cols-2 grid-cols-1 text-xl relative justify-items-center">
 						<div className="absolute -top-8 w-full">
@@ -168,7 +176,7 @@ export default function ModalDetails({
 								Retenção Técnica
 							</h2>
 						</div>
-						<p className="flex items-center gap-3 mt-4 lg:text-lg text-sm">
+						<p className="flex items-center gap-3 md:mt-8 mt-4 xl:text-xl lg:text-lg text-sm">
 							<Money size={24} color="#030303" /> Valor:{' '}
 							<span className="lg:text-sm text-xs font-bold">
 								{new Intl.NumberFormat('pt-BR', {
@@ -177,7 +185,7 @@ export default function ModalDetails({
 								}).format(technicalRetention.amount / 100)}
 							</span>
 						</p>
-						<p className="flex items-center gap-3 mt-4 lg:text-lg text-sm">
+						<p className="flex items-center gap-3 md:mt-8 mt-4 xl:text-xl lg:text-lg text-sm">
 							<Percent size={24} color="#030303" /> Percentual:{' '}
 							<span className="lg:text-sm text-xs font-bold">
 								{technicalRetention.percentage}%

@@ -21,7 +21,7 @@ export default function Input({ title, name, initialValue, disabled, ...rest }: 
 	}, [fieldName, registerField])
 
 	return (
-		<label className="flex flex-col items-start w-full md:text-base text-sm">
+		<label className="flex flex-col items-start w-full md:text-base text-sm relative">
 			{title}
 			<input
 				ref={inputRef}
@@ -31,7 +31,7 @@ export default function Input({ title, name, initialValue, disabled, ...rest }: 
 			/>
 
          {error && (
-				<span className="text-error text-xs font-semibold mt-2 mb-[-8px]">
+				<span className="text-error text-xs font-semibold mt-2 mb-[-10px] lg:absolute lg:-bottom-6">
 					{error}
 				</span>
 			)}
