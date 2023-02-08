@@ -1,9 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import { Form } from '@unform/web'
 import {
-	UserInfo,
 	UserInfoContext,
-	UserInfoContextType,
 } from '../../providers/userInfoContext'
 
 import Header from '../Header/Header'
@@ -12,7 +10,7 @@ import InvoiceInput from './Form/InvoiceInput'
 import AttachFile from './AttachFile'
 import Pagination from '../Pagination/Pagination'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { IContract, IInvoice } from '../../@types/interfaces'
+import { IContract, IInvoice, UserInfo, UserInfoContextType } from '../../@types/interfaces'
 import { api } from '../../services/api'
 import * as Yup from 'yup'
 
@@ -29,6 +27,7 @@ interface HandleSubmitProps {
    PIS: number
    amountTecnhical: number
    technicalRetention: string
+   files: string[]
 }
 
 export default function Invoices() {
@@ -38,27 +37,25 @@ export default function Invoices() {
 		UserInfoContext
 	) as UserInfoContextType
 	const formRef = useRef(null)
-	const formRefTaxes = useRef(null)
-	const formRefTecnhical = useRef(null)
-	const [invoiceChoosed, setInvoiceChoosed] = useState<IInvoice>()
 	const [isClickedTaxes, setIsClickedTaxes] = useState(false)
 	const [isClickedTecnhical, setIsClickedTecnhical] = useState(false)
+   const [filesName, setFilesName] = useState<string[]>([])
 
 	function backToContract() {
 		navigate(`${location.pathname.split('/contract')[0]}`)
 	}
 
 	function searchInvoice(user: UserInfo) {
-		if (!user.invoices) return
-		console.log(user)
 		api.get(`/invoices/${location.pathname.split('/contract/')[1]}`).then(
 			(response) => {
 				const invoiceFind: IInvoice = response.data.invoices[0]
+            if(user.contracts == null) return
 				const contract = user.contracts.find(
 					(contract: IContract) => contract.id === invoiceFind.contractId
 				)
             const amountCalculated = (contract.technicalRetention / 100) * invoiceFind.amount
 
+            // @ts-ignore
 				formRef.current.setData({
 					invoiceNumber: invoiceFind.invoiceNumber,
 					issueDate: new Intl.DateTimeFormat('fr-CA', {
@@ -81,8 +78,6 @@ export default function Invoices() {
 					amountTecnhical: amountCalculated / 100,
 					technicalRetention: `${contract.technicalRetention}%`,
 				})
-
-				setInvoiceChoosed(invoiceFind)
 			}
 		)
 	}
@@ -101,18 +96,20 @@ export default function Invoices() {
 	}, [])
 
    function sendForm() {
+      // @ts-ignore
       formRef.current.submitForm()
    }
 
 	async function handleSubmit(data: HandleSubmitProps) {
 		try {
+         // @ts-ignore
 			formRef.current.setErrors({})
 
 			const schema = Yup.object().shape({
 				invoiceNumber: Yup.string().required(
 					'Número da Nota é obrigatório'
 				),
-				issueDate: Yup.date().required('Data de Emissão é obrigatório').min(new Date(), 'Data inválida'),
+				issueDate: Yup.date().required('Data de Emissão é obrigatório'),
 				dueDate: Yup.date().required('Data de Vencimento é obrigatório').min(new Date(), 'Data inválida'),
 				amount: Yup.number().required('Valor é obrigatório').min(0, 'Valor deve ser maior que 0'),
 				ISSQN: Yup.number().required('ISSQN é obrigatório').min(0, 'ISSQN deve ser maior que 0'),
@@ -131,6 +128,8 @@ export default function Invoices() {
          data.amountTecnhical = data.amountTecnhical * 100
          data.technicalRetention = data.technicalRetention.replace('%', '')
 
+         data.files = [...filesName]
+
          sendData(data)
 		} catch (err) {
 			const validationErrors = {}
@@ -140,6 +139,7 @@ export default function Invoices() {
 					// @ts-ignore
 					validationErrors[error.path] = error.message
 				})
+            // @ts-ignore
 				formRef.current.setErrors(validationErrors)
 			}
 		}
@@ -148,6 +148,7 @@ export default function Invoices() {
    function sendData(data: any) {
       console.log(data)
       console.log('Solicitação 999999 foi enviada com sucesso')
+      navigate('/')
    }
 
 	return (
@@ -311,9 +312,9 @@ export default function Invoices() {
 							</div>
 						</div>
 
+					   <AttachFile filesName={filesName} setFilesName={setFilesName} />
 					</Form>
 
-					<AttachFile />
 				</section>
 
 				<Pagination

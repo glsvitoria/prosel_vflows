@@ -1,16 +1,13 @@
 import { useContext, useRef } from 'react'
 import { Form } from '@unform/web'
 import { useNavigate } from 'react-router-dom'
-import { Company, Contract } from '../../../@types/interfaces'
+import { ICompany, IContract, UserInfoContextType } from '../../../@types/interfaces'
 import { api } from '../../../services/api'
 import * as Yup from 'yup'
 import { SignIn } from 'phosphor-react'
-import {
-	UserInfoContext,
-	UserInfoContextType,
-} from '../../../providers/userInfoContext'
 
 import Input from './Input'
+import { UserInfoContext } from '../../../providers/userInfoContext'
 
 interface HandleSubmitProps {
 	cnpj: string
@@ -23,18 +20,14 @@ export default function FormUser() {
 
 	function login(cnpjWrited: string) {
 		api.get('/companies').then((response) => {
-			const companies: Company[] = response.data.companies
+			const companies: ICompany[] = response.data.companies
 
 			const companyFind = companies.find(
 				(company) => company.cnpj === cnpjWrited
 			)
 			if (companyFind) {
-				api.get(`/contracts/${companyFind.id}`).then((response) => {
-					const contracts: Contract[] = response.data.contracts
-
-					const contractsFind = contracts.filter(
-						(contract) => contract.companyId === companyFind.id
-					)
+				api.get(`/contracts/company/${companyFind.id}`).then((response) => {
+					const contractsFind: IContract[] = response.data.contracts
 
 					if (contractsFind.length > 0) {
 						const userInfoFind = {
@@ -91,6 +84,7 @@ export default function FormUser() {
 					// @ts-ignore
 					validationErrors[error.path] = error.message
 				})
+            // @ts-ignore
 				formRef.current.setErrors(validationErrors)
 			}
 		}

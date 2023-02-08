@@ -1,12 +1,28 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
-
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { createServer, Model } from 'miragejs'
+
+import App from './App'
 import ContractPage from './components/Contract/Contract'
 import Invoices from './components/Invoices/Invoices'
-import { CompanyLoggedProvider } from './providers/userInfoContext'
+import { UserInfoProvider } from './providers/userInfoContext'
+
+// REACT ROUTER DOM
+const router = createBrowserRouter([
+	{
+		path: '/',
+		element: <App />,
+	},
+	{
+		path: '/company/:id',
+		element: <ContractPage />,
+	},
+	{
+		path: '/company/:companyId/contract/:id',
+		element: <Invoices />,
+	},
+])
 
 // MIRAGE JS
 createServer({
@@ -40,28 +56,28 @@ createServer({
 					companyId: '1',
 					contractName: 'Título do primeiro contrato de exemplo',
 					contractCode: '11001100-01',
-					technicalRetention: '10',
+					technicalRetention: 10,
 				},
 				{
 					id: '2',
 					companyId: '1',
 					contractName: 'Título do segundo contrato de exemplo',
 					contractCode: '22002200-02',
-					technicalRetention: '5',
+					technicalRetention: 5,
 				},
 				{
 					id: '3',
 					companyId: '1',
 					contractName: 'Título do terceiro contrato de exemplo',
 					contractCode: '33003300-03',
-					technicalRetention: '15',
+					technicalRetention: 15,
 				},
 				{
 					id: '4',
 					companyId: '1',
 					contractName: 'Título do quarto contrato de exemplo',
 					contractCode: '44004400-04',
-					technicalRetention: '8',
+					technicalRetention: 8,
 				},
 			],
 			invoices: [
@@ -144,67 +160,55 @@ createServer({
 	routes() {
 		this.namespace = 'api'
 
+      // CATCH ALL COMPANIES
 		this.get('/companies', () => {
 			return this.schema.all('companies')
 		})
 
-      this.get('/contracts', (scheme, req) => {
-         let id = req.params.id
-
-			return this.schema.all('contracts')
-		})
-
-		this.get('/contracts/:id', (_, req) => {
+      // CATCH CONTRACT BY ID
+      this.get('/contracts/:id', (_, req) => {
          let id: string = req.params.id
 
+			return this.schema.all('contracts').filter((contract) => contract.id == id)
+		})
+
+      // CATCH CONTRACTS BY COMPANY ID
+		this.get('/contracts/company/:id', (_, req) => {
+         let id: string = req.params.id
+         
+         // @ts-ignore
 			return this.schema.all('contracts').filter((contract) => contract.companyId == id)
 		})
 
+      // CATCH INVOICES BY COMPANY ID
       this.get('/invoices/company/:id', (_, req) => {
          let id: string = req.params.id
 
+         // @ts-ignore
 			return this.schema.all('invoices').filter((invoices) => invoices.companyId == id)
 		})
 
+      // CATCH INVOICES BY CONTRACT ID
       this.get('/invoices/contract/:id', (_, req) => {
          let id: string = req.params.id
 
+         // @ts-ignore
 			return this.schema.all('invoices').filter((invoices) => invoices.contractId == id)
 		})
 
+      // CATCH INVOICES BY ID
       this.get('/invoices/:id', (_, req) => {
          let id: string = req.params.id
 
 			return this.schema.all('invoices').filter((invoices) => invoices.id == id)
 		})
-
-
-
-      this.get('/invoices', () => {
-         return this.schema.all('invoices')
-      })
 	},
 })
 
-const router = createBrowserRouter([
-	{
-		path: '/',
-		element: <App />,
-	},
-	{
-		path: '/company/:id',
-		element: <ContractPage />,
-	},
-	{
-		path: '/company/:companyId/contract/:id',
-		element: <Invoices />,
-	},
-])
-
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
-		<CompanyLoggedProvider>
+		<UserInfoProvider>
 			<RouterProvider router={router} />
-		</CompanyLoggedProvider>
+		</UserInfoProvider>
 	</React.StrictMode>
 )

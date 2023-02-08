@@ -4,10 +4,10 @@ import { MagnifyingGlass } from 'phosphor-react'
 import { IContract } from '../../@types/interfaces'
 
 import Pagination from '../Pagination/Pagination'
-import ModalDetails from './ModalDetails'
+import ModalDetails from './Modal/ModalDetails'
 
 interface TableProps {
-	contracts: IContract[] | null
+	contracts: IContract | IContract[] | null 
 }
 
 export default function Table({ contracts }: TableProps) {
@@ -54,6 +54,7 @@ export default function Table({ contracts }: TableProps) {
 				</thead>
 				<tbody>
 					{contracts &&
+                  // @ts-ignore
 						contracts.map((contract: IContract, index: number) => (
 							<tr
 								className={

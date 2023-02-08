@@ -1,3 +1,5 @@
+import { Dispatch } from "react"
+
 export interface ICompany {
 	id: string
 	name: string
@@ -11,7 +13,7 @@ export interface IContract {
 	companyId: string
 	contractName: string
 	contractCode: string
-	technicalRetention: string
+	technicalRetention: number
 }
 
 export interface IInvoice {
@@ -35,4 +37,15 @@ export interface IInvoice {
 		percentage: string
 	}
 	attachedNotes: []
+}
+
+export type UserInfoContextType = {
+   userInfo: UserInfo | null
+   setUserInfo: Dispatch<React.SetStateAction<UserInfo | null>>
+}
+
+export type UserInfo = {
+   company: ICompany | null
+   contracts: IContract | IContract[] | null
+   invoices: IInvoice[] | null
 }

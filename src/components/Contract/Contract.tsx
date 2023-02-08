@@ -1,14 +1,13 @@
 import { useContext, useEffect } from 'react'
 import {
-	UserInfoContextType,
 	UserInfoContext,
-   UserInfo,
 } from '../../providers/userInfoContext'
 
 import Header from '../Header/Header'
 import Table from './Table'
 import Footer from '../Footer/Footer'
 import { api } from '../../services/api'
+import { UserInfo, UserInfoContextType } from '../../@types/interfaces'
 
 export default function ContractPage() {
 	const { userInfo, setUserInfo } = useContext(
@@ -35,6 +34,7 @@ export default function ContractPage() {
 	useEffect(() => {
 		if (userInfo == null) {
 			const userInfoStorage = localStorage.getItem('userInfo')
+         // @ts-ignore
 			const userInfoParse: UserInfo = JSON.parse(userInfoStorage)
 
          searchInvoices(userInfoParse)

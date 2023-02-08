@@ -1,8 +1,13 @@
 import { TrashSimple, UploadSimple } from 'phosphor-react'
-import { useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useRef, useState } from 'react'
 
-export default function AttachFile() {
-	const [filesName, setFilesName] = useState<string[]>([])
+interface AttachFileProps {
+   filesName: string[]
+   setFilesName: Dispatch<SetStateAction<string[]>>
+}
+
+export default function AttachFile({filesName, setFilesName}: AttachFileProps) {
+
 	const inputRef = useRef(null)
 
    function deleteFile(file: string) {
