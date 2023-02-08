@@ -127,7 +127,8 @@ export default function Invoices() {
 					.required('Data de Emissão é obrigatório'),
 				dueDate: Yup.date()
 					.typeError('Uma data válida deve ser preenchida')
-					.required('Data de Vencimento é obrigatório'),
+					.required('Data de Vencimento é obrigatório')
+					.min(data.issueDate, 'A data não poder ser menor que a emissão'),
 				amount: Yup.number()
 					.typeError('Valor é obrigatório e deve ser um número')
 					.required('Valor é obrigatório')
