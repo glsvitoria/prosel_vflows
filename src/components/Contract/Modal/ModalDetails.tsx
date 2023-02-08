@@ -16,14 +16,24 @@ interface TechnicalRetentionState {
 	amount: number
 }
 
+function isSmallScreen(size: number): Boolean {
+   if (typeof window !== 'undefined') {
+      console.log('oi')
+      return window.innerWidth < size;
+   }
+   return false;
+}
+
 const customStyles = {
 	content: {
-		width: '60%',
-      maxWidth: '800px',
-		height: '60%',
+		width: isSmallScreen(560) ? '90%' : '60%',
+		maxWidth: '800px',
+		minWidth: '240px',
+		height: '64%',
 		margin: 'auto',
 		borderRadius: '1.5rem',
-		padding: '3rem',
+		padding: isSmallScreen(480) ? '2rem 1rem' : '3rem 2rem',
+      inset: isSmallScreen(480) ? '0px' : '40px'
 	},
 }
 
@@ -58,7 +68,7 @@ export default function ModalDetails({
 					amount:
 						(contractFind.technicalRetention / 100) * invoiceFind.amount,
 				})
-            setIsLoading(false)
+				setIsLoading(false)
 			})
 		})
 	}, [contractID])
@@ -70,40 +80,40 @@ export default function ModalDetails({
 			style={customStyles}
 			contentLabel="Modal Details"
 			ariaHideApp={false}
-         onAfterOpen={() => setIsLoading(true)}
+			onAfterOpen={() => setIsLoading(true)}
 		>
 			{invoice && !isLoading ? (
 				<section>
 					<div className="flex items-center justify-center">
 						<Info
-							size={40}
+							size={32}
 							color="rgba(193, 159, 159, 0.90)"
-							className="mr-4"
+							className="mr-4 lg:w-8 lg:h-8 w-6 h-6"
 						/>
-						<h1 className="text-3xl">Detalhes do Contrato</h1>
+						<h1 className="lg:text-3xl md:text-2xl text-lg">Detalhes do Contrato</h1>
 					</div>
-					<div className="grid grid-cols-2 mt-12 gap-y-4">
-						<p className="text-lg">
+					<div className="grid xl:grid-cols-2 grid-cols-1 text-center md:mt-10 mt-6 gap-y-4">
+						<p className="lg:text-lg md:text-base text-sm">
 							Número da Nota:{' '}
-							<span className="text-sm font-bold">
+							<span className="md:text-sm text-xs font-bold">
 								{invoice.invoiceNumber}
 							</span>
 						</p>
-						<p className="text-lg">
+						<p className="lg:text-lg md:text-base text-sm">
 							Valor:{' '}
-							<span className="text-sm font-bold">{invoice.amount}</span>
+							<span className="md:text-sm text-xs font-bold">{invoice.amount}</span>
 						</p>
-						<p className="text-lg">
+						<p className="lg:text-lg md:text-base text-sm">
 							Data de Emissão:{' '}
-							<span className="text-sm font-bold">
+							<span className="md:text-sm text-xs font-bold">
 								{new Intl.DateTimeFormat('pt-BR').format(
 									new Date(invoice.issueDate)
 								)}
 							</span>
 						</p>
-						<p className="text-lg">
+						<p className="lg:text-lg md:text-base text-sm">
 							Data de Vencimento:{' '}
-							<span className="text-sm font-bold">
+							<span className="md:text-sm text-xs font-bold">
 								{new Intl.DateTimeFormat('pt-BR').format(
 									new Date(invoice.dueDate)
 								)}
@@ -111,11 +121,11 @@ export default function ModalDetails({
 						</p>
 					</div>
 
-					<div className="border-2 mt-6 mb-4 border-no_black/25"></div>
+					<div className="border-2 sm:mt-6 mt-8 mb-4 border-no_black/25"></div>
 
-					<ul className="grid grid-cols-3 gap-x-16 gap-y-8 text-center text-white relative">
+					<ul className="grid md:grid-cols-3 xs:grid-cols-2 xl:gap-x-16 gap-x-8 xl:gap-y-8 text-center text-white relative">
 						<div className="absolute -top-8 w-full">
-							<h2 className=" text-no_black w-2/5 text-center border-2 mx-auto border-no_black/25 -top-8 m-auto text-lg bg-white">
+							<h2 className=" text-no_black xl:w-2/5 lg:w-3/5 xs:w-4/5 w-11/12 text-center border-2 mx-auto border-no_black/25 -top-8 m-auto md:text-lg text-base bg-white">
 								Retenção de Impostos
 							</h2>
 						</div>
@@ -151,33 +161,33 @@ export default function ModalDetails({
 						/>
 					</ul>
 
-					<div className="border-2 mt-6 mb-4 border-no_black/25"></div>
+					<div className="border-2 sm:mt-6 mt-10 mb-4 border-no_black/25"></div>
 
-					<div className="grid grid-cols-2 text-xl relative">
+					<div className="grid md:grid-cols-2 grid-cols-1 text-xl relative justify-items-center">
 						<div className="absolute -top-8 w-full">
-							<h2 className=" text-no_black w-2/5 text-center border-2 mx-auto border-no_black/25 -top-8 m-auto text-lg bg-white">
+							<h2 className=" text-no_black xl:w-2/5 lg:w-3/5 xs:w-4/5 w-11/12 text-center border-2 mx-auto border-no_black/25 -top-8 m-auto md:text-lg text-base bg-white">
 								Retenção Técnica
 							</h2>
 						</div>
-						<p className="flex items-center gap-3 mt-4">
-							<Money size={32} color="#030303" /> Valor:{' '}
-							<span className="text-sm font-bold">
+						<p className="flex items-center gap-3 mt-4 lg:text-lg text-sm">
+							<Money size={24} color="#030303" /> Valor:{' '}
+							<span className="lg:text-sm text-xs font-bold">
 								{new Intl.NumberFormat('pt-BR', {
 									style: 'currency',
 									currency: 'BRL',
 								}).format(technicalRetention.amount / 100)}
 							</span>
 						</p>
-						<p className="flex items-center gap-3  mt-4">
-							<Percent size={32} color="#030303" /> Percentual:{' '}
-							<span className="text-sm font-bold">
+						<p className="flex items-center gap-3 mt-4 lg:text-lg text-sm">
+							<Percent size={24} color="#030303" /> Percentual:{' '}
+							<span className="lg:text-sm text-xs font-bold">
 								{technicalRetention.percentage}%
 							</span>
 						</p>
 					</div>
 				</section>
 			) : (
-				<div className='w-full h-full flex items-center justify-center'>
+				<div className="w-full h-full flex items-center justify-center">
 					<div className="border-[20px] border-line_2 border-t-table_header h-64 w-64 animate-spin rounded-[50%]"></div>
 				</div>
 			)}
@@ -186,7 +196,7 @@ export default function ModalDetails({
 				onClick={closeModal}
 				className="absolute right-4 top-4 hover:scale-125 duration-300"
 			>
-				<X size={32} color="#030303" />
+				<X size={32} color="#030303" className="lg:w-8 lg:h-8 w-6 h-6" />
 			</button>
 		</Modal>
 	)

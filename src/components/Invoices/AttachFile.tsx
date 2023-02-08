@@ -16,9 +16,9 @@ export default function AttachFile({filesName, setFilesName}: AttachFileProps) {
       setFilesName(newFileNameArray)
    }
 	return (
-		<div className="flex items-center mt-12 ml-2">
-			<label className="bg-button_green text-white flex items-center justify-around w-56 py-2 px-4 rounded-2xl hover:brightness-125 hover:cursor-pointer duration-300 mr-8">
-				<UploadSimple size={32} color="#FFF" />
+		<div className="flex sm:flex-row flex-col sm:gap-y-0 gap-y-4 items-center md:mt-12 md:ml-2">
+			<label className="bg-button_green text-white flex items-center justify-around xs:w-56 w-full py-2 px-4 rounded-2xl hover:brightness-125 hover:cursor-pointer duration-300 sm:mr-8 md:text-base text-sm">
+				<UploadSimple size={24} color="#FFF" />
 				Anexar Nota Fiscal
 				<input
 					ref={inputRef}

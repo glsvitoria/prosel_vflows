@@ -21,11 +21,11 @@ export default function Input({ title, name, initialValue, disabled, ...rest }: 
 	}, [fieldName, registerField])
 
 	return (
-		<label className="flex flex-col items-start w-full">
+		<label className="flex flex-col items-start w-full md:text-base text-sm">
 			{title}
 			<input
 				ref={inputRef}
-				className={`border-black/20 border-[1px] rounded-lg w-4/5 h-10 pl-2 mt-2 ${disabled ? 'bg-disabled' : ''}`}
+				className={`border-black/20 border-[1px] rounded-lg sm:w-4/5 w-full h-10 pl-2 mt-2 ${disabled ? 'bg-disabled' : ''}`}
             disabled={disabled}
 				{...rest}
 			/>

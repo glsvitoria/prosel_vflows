@@ -160,10 +160,10 @@ export default function Invoices() {
 					isSuitcase={false}
 				/>
 
-				<section className="border-2 border-no_black/25 rounded-2xl p-8">
-					<div className="grid grid-cols-2 text-2xl mb-12">
-						<h3>Código do contrato</h3>
-						<h3>Título do contratoooo</h3>
+				<section className="border-2 border-no_black/25 rounded-2xl xs:p-8 p-4">
+					<div className="grid md:grid-cols-2 grid-cols-1 md:gap-y-0 gap-y-4 lg:text-2xl md:text-xl xs:text-lg md:mb-12 mb-8">
+						<h3>Código do contrato: 110202020.00</h3>
+						<h3>Título do contrato secundário etc</h3>
 					</div>
 
 					<Form
@@ -172,7 +172,7 @@ export default function Invoices() {
 						className="flex flex-col"
 					>
                   
-						<div className='flex items-center justify-between mb-16'>
+						<div className='lg:flex lg:items-center grid sm:grid-cols-2 grid-cols-1 gap-y-4 justify-between md:mb-16 mb-10'>
                      <InvoiceInput
                         title="Número da nota"
                         type="number"
@@ -202,25 +202,25 @@ export default function Invoices() {
                   </div>
 
 						<div>
-							<label className="text-xl flex items-center mb-16">
+							<label className="md:text-xl xs:text-lg flex items-center md:mb-16 mb-8">
 								<input
 									type="checkbox"
 									name="taxesRetention"
 									id="taxesRetention"
-									className="mr-4 w-6 h-6"
+									className="mr-4 md:w-6 w-4 md:h-6 h-4"
 									onChange={() => setIsClickedTaxes(!isClickedTaxes)}
 								/>
 								Retenção de Impostos
 							</label>
 
 							<div
-								className="border-[1px] border-no_black rounded-lg mt-12 mb-16 relative p-10"
+								className="border-[1px] border-no_black rounded-lg mt-12 mb-16 relative sm:p-10 p-6"
 								hidden={!isClickedTaxes}
 							>
-								<h4 className="absolute text-xl -top-4 bg-white w-40 text-center">
+								<h4 className="absolute md:text-xl sm:text-lg -top-4 bg-white md:w-40 w-32 text-center">
 									Dados
 								</h4>
-								<div className="flex">
+								<div className="lg:flex grid xs:grid-cols-2  gap-4">
 									<InvoiceInput
 										type="number"
 										name="ISSQN"
@@ -274,12 +274,12 @@ export default function Invoices() {
 							</div>
 
 							<div>
-								<label className="text-xl flex items-center">
+								<label className="md:text-xl xs:text-lg flex items-center md:mb-16 mb-8">
 									<input
 										type="checkbox"
 										name="technicalRetention"
 										id="technicalRetention"
-										className="mr-4 w-6 h-6"
+										className="mr-4 md:w-6 w-4 md:h-6 h-4"
 										onChange={() =>
 											setIsClickedTecnhical(!isClickedTecnhical)
 										}
@@ -288,13 +288,13 @@ export default function Invoices() {
 								</label>
 
 								<div
-									className="border-[1px] border-no_black rounded-lg mt-12 mb-16 relative p-10"
+									className="border-[1px] border-no_black rounded-lg mt-12 mb-16 relative sm:p-10 p-6"
 									hidden={!isClickedTecnhical}
 								>
-									<h4 className="absolute text-xl -top-4 bg-white w-40 text-center">
+									<h4 className="absolute md:text-xl sm:text-lg -top-4 bg-white md:w-40 w-32 text-center">
 										Dados
 									</h4>
-									<div className="flex">
+									<div className="flex xs:flex-row flex-col gap-4">
 										<InvoiceInput
 											name="amountTecnhical"
 											title="Valor (R$)"

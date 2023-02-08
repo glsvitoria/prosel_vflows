@@ -102,7 +102,7 @@ export default function FormUser() {
 			<Input name="cnpj" placeholder="00.000.000/0000-00" />
 			<button
 				type="submit"
-				className="bg-vflows_green text-white md:w-3/5 w-4/5 h-10 mt-8 mb-6 rounded-lg md:text-xl xm:text-base text-sm hover:brightness-90 duration-300 flex items-center justify-center xl:gap-4 gap-2"
+				className="bg-vflows_green text-white md:w-3/5 w-4/5 h-10 mt-8 mb-6 rounded-lg md:text-xl xs:text-base text-sm hover:brightness-90 duration-300 flex items-center justify-center xl:gap-4 gap-2"
 			>
 				<SignIn size={24} color="#FFF" weight="fill" />
 				Acessar
