@@ -90,10 +90,12 @@ Invoice Page - Página de dados da nota fiscal
    - Navegação entre páginas: [React-Router-Dom](https://reactrouter.com/en/main)
    - Modal: [React-Modal](https://www.npmjs.com/package/react-modal)
 
-### O que eu aprendi
+### O que eu aprendi e implementei
 ---
    - Utilização do MirageJS e suas requisições criadas para pegar as informações
    - Criação de validação de formulário com Yup atrelado ao Unform
+   - Aplicação da biblioteca React Modal com opções de responsividade
+   - Planejamento de um projeto iniciando desde o Figma e Miro para o design e ideia para o database para após isso ir para o código
 
 ## Autor
 ---
