@@ -18,7 +18,6 @@ interface TechnicalRetentionState {
 
 function isSmallScreen(size: number): Boolean {
    if (typeof window !== 'undefined') {
-      console.log('oi')
       return window.innerWidth < size;
    }
    return false;
