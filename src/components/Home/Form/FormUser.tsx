@@ -94,17 +94,17 @@ export default function FormUser() {
 		<Form
 			ref={formRef}
 			onSubmit={handleSubmit}
-			className="flex flex-col items-center w-3/5 m-10 border-2 rounded-2xl mb-20"
+			className="flex flex-col items-center md:w-3/5 w-4/5 sm:mt-10 mt-6 border-2 rounded-2xl sm:mb-16 mb-6 sm:px-6 px-4"
 		>
-			<label htmlFor="cnpj" className="self-start ml-10 mt-6 mb-2">
+			<label htmlFor="cnpj" className="self-start mt-6 mb-2 sm:text-base text-sm">
 				CNPJ
 			</label>
 			<Input name="cnpj" placeholder="00.000.000/0000-00" />
 			<button
 				type="submit"
-				className="bg-vflows_green text-white w-3/5 h-10 mt-8 mb-6 rounded-lg text-xl hover:brightness-90 duration-300 flex items-center justify-center"
+				className="bg-vflows_green text-white md:w-3/5 w-4/5 h-10 mt-8 mb-6 rounded-lg md:text-xl xm:text-base text-sm hover:brightness-90 duration-300 flex items-center justify-center xl:gap-4 gap-2"
 			>
-				<SignIn size={24} color="#FFF" weight="fill" className="mr-4" />
+				<SignIn size={24} color="#FFF" weight="fill" />
 				Acessar
 			</button>
 		</Form>
